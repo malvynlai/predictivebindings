@@ -1,4 +1,4 @@
-name: cs229
+name: typ
 channels:
 - pytorch
 - nvidia
