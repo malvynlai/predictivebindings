@@ -6,7 +6,7 @@ from pathlib import Path
 import torch.nn.functional as F
 from train import MoleculeDataset
 from torch.utils.data import DataLoader
-from model import MoleculePredictor, ModelWithGRU, ModelWithoutGRU
+from model import CNN1d, CNN1dWithGRU, CNN1dWithoutGRU
 
 
 def load_models(model_dir='trained_models'):
@@ -113,22 +113,27 @@ def plot_parameter_magnitudes(models, save_path='parameter_magnitudes.png'):
 
 
 def plot_activation_histograms(models, dataset, save_path='activation_histograms.png'):
-    # Distribution of activations for each model
     plt.figure(figsize=(15, 5))
     loader = DataLoader(dataset, batch_size=64, shuffle=True)
     batch = next(iter(loader))
     input_data = batch['features']
     model_classes = {
-        'molecule_predictor': MoleculePredictor,
-        'model_with_gru': ModelWithGRU,
-        'model_without_gru': ModelWithoutGRU
+        'cnn1d': CNN1d,
+        'cnn1d_with_gru': CNN1dWithGRU,
+        'cnn1d_without_gru': CNN1dWithoutGRU
     }
+    
     for idx, (name, state_dict) in enumerate(models.items(), 1):
+        if name not in model_classes:
+            print(f"Warning: No matching model class for {name}")
+            continue
         model_class = model_classes[name]
-        model = model_class(vocab_size=37)
+        if name == 'cnn1d':
+            model = model_class(vocab_size=37, hidden_dim=64)
+        else:
+            model = model_class(vocab_size=37, embedding_dim=64)
         model.load_state_dict(state_dict)
         model.eval()
-        
         with torch.no_grad():
             activations = []
             def hook(module, input, output):
@@ -149,7 +154,6 @@ def plot_activation_histograms(models, dataset, save_path='activation_histograms
         plt.ylabel('Count')
         if len(activations) <= 5:  
             plt.legend()
-    
     plt.tight_layout()
     plt.savefig(save_path)
     plt.close()
