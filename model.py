@@ -11,7 +11,7 @@ class WeightNormLinear(nn.Module):
         return self.linear(x)
 
 
-class MoleculePredictor(nn.Module):
+class CNN1d(nn.Module):
     def __init__(self, vocab_size=37, hidden_dim=64, inp_len=142, test=False):
         super().__init__()
         self.num_filters = 64
@@ -98,7 +98,7 @@ class MLPBlock(nn.Module):
         return x
 
 
-class ModelWithGRU(nn.Module):
+class CNN1dWithGRU(nn.Module):
     def __init__(self, vocab_size, embedding_dim=64):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
@@ -134,7 +134,7 @@ class ModelWithGRU(nn.Module):
         return x
 
 
-class ModelWithoutGRU(nn.Module):
+class CNN1dWithoutGRU(nn.Module):
     def __init__(self, vocab_size, embedding_dim=64):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)

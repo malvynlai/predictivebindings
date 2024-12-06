@@ -1,23 +1,23 @@
-name: typ
+name: cs229
 channels:
 - pytorch
 - nvidia
 - conda-forge
 - defaults
 dependencies:
-- python=3.12
+- python=3.10
 - pytorch::pytorch
 - pytorch::torchvision
 - pytorch::torchaudio
 - pytorch::pytorch-cuda=11.8
-- pandas
-- numpy
-- joblib
-- tqdm
-- matplotlib
-- pyarrow
-- dask
-- seaborn
+- conda-forge::pandas
+- conda-forge::numpy
+- conda-forge::joblib
+- conda-forge::tqdm
+- conda-forge::matplotlib
+- conda-forge::pyarrow
+- conda-forge::dask
+- conda-forge::seaborn
 
 
 

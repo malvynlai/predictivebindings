@@ -10,7 +10,6 @@ from model import MoleculePredictor, ModelWithGRU, ModelWithoutGRU
 
 
 def load_models(model_dir='trained_models'):
-    """Load all trained models from directory"""
     models = {}
     model_dir = Path(model_dir)
     for model_path in model_dir.glob('*.pt'):
@@ -19,7 +18,7 @@ def load_models(model_dir='trained_models'):
 
 
 def plot_weight_distributions(models, save_path='weight_distributions.png'):
-    """Plot the distribution of weights for each model"""
+    # Distribution of weights for each model
     plt.figure(figsize=(15, 5))
     for idx, (name, state_dict) in enumerate(models.items(), 1):
         weights = []
@@ -37,7 +36,7 @@ def plot_weight_distributions(models, save_path='weight_distributions.png'):
 
 
 def plot_layer_sparsity(models, save_path='layer_sparsity.png'):
-    """Plot the sparsity (% of zeros) in each layer"""
+    # Sparsity in each layer
     plt.figure(figsize=(12, 6))
     
     for name, state_dict in models.items():
@@ -64,7 +63,7 @@ def plot_layer_sparsity(models, save_path='layer_sparsity.png'):
 
 
 def plot_attention_patterns(models, save_path='attention_patterns.png'):
-    """Plot attention patterns for models with attention mechanisms"""
+    # Attention patterns for models with attention mechanisms 
     plt.figure(figsize=(15, 5))
     
     for idx, (name, state_dict) in enumerate(models.items(), 1):
@@ -87,7 +86,7 @@ def plot_attention_patterns(models, save_path='attention_patterns.png'):
 
 
 def plot_parameter_magnitudes(models, save_path='parameter_magnitudes.png'):
-    """Plot the magnitude of parameters across different layers"""
+    # Magnitude of parameters across different layers
     plt.figure(figsize=(12, 6))
     
     for name, state_dict in models.items():
@@ -114,7 +113,7 @@ def plot_parameter_magnitudes(models, save_path='parameter_magnitudes.png'):
 
 
 def plot_activation_histograms(models, dataset, save_path='activation_histograms.png'):
-    """Plot distribution of activations for each model using real data"""
+    # Distribution of activations for each model
     plt.figure(figsize=(15, 5))
     loader = DataLoader(dataset, batch_size=64, shuffle=True)
     batch = next(iter(loader))
@@ -134,14 +133,11 @@ def plot_activation_histograms(models, dataset, save_path='activation_histograms
             activations = []
             def hook(module, input, output):
                 activations.append(output.cpu().numpy())
-            
             handles = []
             for module in model.modules():
                 if isinstance(module, torch.nn.Linear):
                     handles.append(module.register_forward_hook(hook))
-            
             _ = model(input_data)
-            
             for handle in handles:
                 handle.remove()
         
