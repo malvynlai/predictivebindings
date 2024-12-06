@@ -1,0 +1,22 @@
+name: cs229
+channels:
+- pytorch
+- nvidia
+- conda-forge
+- defaults
+dependencies:
+- python=3.12
+- pytorch::pytorch
+- pytorch::torchvision
+- pytorch::torchaudio
+- pytorch::pytorch-cuda=11.8
+- pandas
+- numpy
+- joblib
+- tqdm
+- matplotlib
+- pyarrow
+- dask
+
+
+
